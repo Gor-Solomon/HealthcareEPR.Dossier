@@ -40,17 +40,17 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DossierDbContext>();
     var dossierId = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6");
-    
+
     // S6966: Use AnyAsync and await
     if (!await context.Dossiers.AnyAsync())
     {
         // S6562: Provide DateTimeKind.Utc
         var patient = new Patient(Guid.NewGuid(), "John", "Doe", new DateTime(1980, 5, 15, 0, 0, 0, DateTimeKind.Utc));
         var dossier = new PatientDossier(dossierId, patient.Id);
-        
+
         context.Patients.Add(patient);
         context.Dossiers.Add(dossier);
-        
+
         // S6966: Use SaveChangesAsync and await
         await context.SaveChangesAsync();
     }
@@ -71,4 +71,8 @@ app.MapControllers();
 await app.RunAsync();
 
 // Make the implicit Program class public so test projects can access it
-public partial class Program { }
+public partial class Program
+{
+    // S1118: Add a protected constructor to satisfy SonarCloud
+    protected Program() { }
+}
