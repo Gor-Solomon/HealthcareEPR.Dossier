@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Vercel and Next.js fuckers
+.vercel/
+.next/
+out/
+build/
