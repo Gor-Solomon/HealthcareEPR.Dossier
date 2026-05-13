@@ -42,14 +42,14 @@ public class AddSessionNoteTests
 
         // Assert
         result.Should().NotBeEmpty();
-        
+
         // Verify AddNoteAsync was called with the correct note data
         _repositoryMock.Verify(x => x.AddNoteAsync(
-            It.Is<SessionNote>(n => 
-                n.DossierId == dossierId && 
-                n.RawContent == command.RawContent && 
-                n.AiSummary == summary), 
-            It.IsAny<CancellationToken>()), 
+            It.Is<SessionNote>(n =>
+                n.DossierId == dossierId &&
+                n.RawContent == command.RawContent &&
+                n.AiSummary == summary),
+            It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
@@ -71,16 +71,16 @@ public class AddSessionNoteTests
 
         // Assert
         result.Should().NotBeEmpty();
-        
+
         // Verify AddNoteAsync was still called even if AI failed
         _repositoryMock.Verify(x => x.AddNoteAsync(
-            It.Is<SessionNote>(n => 
-                n.DossierId == dossierId && 
-                n.RawContent == command.RawContent && 
-                n.AiSummary == null), 
-            It.IsAny<CancellationToken>()), 
+            It.Is<SessionNote>(n =>
+                n.DossierId == dossierId &&
+                n.RawContent == command.RawContent &&
+                n.AiSummary == null),
+            It.IsAny<CancellationToken>()),
             Times.Once);
-        
+
         // Verify logger was called
         _loggerMock.Verify(
             x => x.Log(
@@ -105,7 +105,8 @@ public class AddSessionNoteTests
         // Act
         var act = () => _handler.Handle(command, CancellationToken.None);
 
-        // Assert
-        await act.Should().ThrowAsync<Exception>().WithMessage("Dossier not found");
+        // Assert - UPDATED EXCEPTION TYPE AND MESSAGE
+        await act.Should().ThrowAsync<KeyNotFoundException>()
+            .WithMessage($"Dossier with ID {dossierId} not found.");
     }
 }
