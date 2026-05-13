@@ -10,6 +10,11 @@ jobs:
     name: Deploy Next.js to Vercel
     runs-on: ubuntu-latest
     
+    # THIS SECTION IS CRITICAL BECAUSE YOUR CODE IS IN A SUBFOLDER
+    defaults:
+      run:
+        working-directory: ./HealthcareEPR.Dossier.Web
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
