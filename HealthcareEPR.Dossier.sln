@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareEPR.Dossier.Api",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareEPR.Dossier.UnitTests", "HealthcareEPR.Dossier.UnitTests\HealthcareEPR.Dossier.UnitTests.csproj", "{1BE0D0A5-C9F6-4E2C-BD21-06CAF2D9E5F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthcareEPR.Dossier.IntegrationTests", "HealthcareEPR.Dossier.IntegrationTests\HealthcareEPR.Dossier.IntegrationTests.csproj", "{B2C1A2D3-E4F5-4A6B-8C9D-0E1F2A3B4C5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,5 +41,9 @@ Global
 		{1BE0D0A5-C9F6-4E2C-BD21-06CAF2D9E5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BE0D0A5-C9F6-4E2C-BD21-06CAF2D9E5F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BE0D0A5-C9F6-4E2C-BD21-06CAF2D9E5F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2C1A2D3-E4F5-4A6B-8C9D-0E1F2A3B4C5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2C1A2D3-E4F5-4A6B-8C9D-0E1F2A3B4C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2C1A2D3-E4F5-4A6B-8C9D-0E1F2A3B4C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2C1A2D3-E4F5-4A6B-8C9D-0E1F2A3B4C5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
