@@ -70,8 +70,5 @@ app.MapControllers();
 // S6966: Use RunAsync and await
 await app.RunAsync();
 
-// S1118: Added static and private constructor to satisfy Sonar rule for partial class
-public static partial class Program 
-{
-    static Program() { }
-}
+// Make the implicit Program class public so test projects can access it
+public partial class Program { }
