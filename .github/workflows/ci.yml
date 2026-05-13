@@ -46,8 +46,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          # ADDED THE /o PARAMETER BELOW
-          dotnet-sonarscanner begin /k:"HealthcareEPR_Dossier" \
+          # The key below MUST match the 'Project Key' in SonarCloud exactly (dot, not underscore)
+          dotnet-sonarscanner begin /k:"HealthcareEPR.Dossier" \
             /o:"${{ secrets.SONAR_ORGANIZATION }}" \
             /d:sonar.token="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
