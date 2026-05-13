@@ -13,11 +13,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Relaxed CORS for debugging
+// S5122: Restricted CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()
+    options.AddPolicy("FmscaPolicy",
+        policy => policy.WithOrigins("https://fmsca-solution.vercel.app")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });
@@ -34,20 +34,25 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Ad
 
 var app = builder.Build();
 
+// S6966: Await async calls in top-level statements
 // Seed Data for Testing
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<DossierDbContext>();
     var dossierId = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6");
     
-    if (!context.Dossiers.Any())
+    // S6966: Use AnyAsync and await
+    if (!await context.Dossiers.AnyAsync())
     {
-        var patient = new Patient(Guid.NewGuid(), "John", "Doe", new DateTime(1980, 5, 15));
+        // S6562: Provide DateTimeKind.Utc
+        var patient = new Patient(Guid.NewGuid(), "John", "Doe", new DateTime(1980, 5, 15, 0, 0, 0, DateTimeKind.Utc));
         var dossier = new PatientDossier(dossierId, patient.Id);
         
         context.Patients.Add(patient);
         context.Dossiers.Add(dossier);
-        context.SaveChanges();
+        
+        // S6966: Use SaveChangesAsync and await
+        await context.SaveChangesAsync();
     }
 }
 
@@ -58,11 +63,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// REMOVED UseHttpsRedirection for local debugging to avoid certificate/redirect issues
-app.UseCors("AllowAll");
+app.UseCors("FmscaPolicy");
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+// S6966: Use RunAsync and await
+await app.RunAsync();
 
-public partial class Program { }
+// S1118: Added static and private constructor to satisfy Sonar rule for partial class
+public static partial class Program 
+{
+    static Program() { }
+}

@@ -24,8 +24,10 @@ public class AddSessionNoteCommandHandler : IRequestHandler<AddSessionNoteComman
     public async Task<Guid> Handle(AddSessionNoteCommand request, CancellationToken cancellationToken)
     {
         var dossier = await _repository.GetByIdAsync(request.DossierId, cancellationToken);
+        
+        // S112: Use specific exception instead of System.Exception
         if (dossier == null)
-            throw new Exception("Dossier not found");
+            throw new KeyNotFoundException($"Dossier with ID {request.DossierId} not found.");
 
         var note = new SessionNote(Guid.NewGuid(), dossier.Id, Guid.NewGuid(), request.RawContent);
 
@@ -39,8 +41,6 @@ public class AddSessionNoteCommandHandler : IRequestHandler<AddSessionNoteComman
             _logger.LogError(ex, "AI Summarization failed for note {NoteId}. Proceeding without summary.", note.Id);
         }
 
-        // Use the new repository method to save the note directly
-        // This avoids the aggregate update issue with EF In-Memory
         await _repository.AddNoteAsync(note, cancellationToken);
 
         return note.Id;
