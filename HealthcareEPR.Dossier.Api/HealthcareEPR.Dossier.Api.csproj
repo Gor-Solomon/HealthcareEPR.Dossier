@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="HealthcareEPR.Dossier.IntegrationTests" />
     <ProjectReference Include="..\HealthcareEPR.Dossier.Infrastructure\HealthcareEPR.Dossier.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
