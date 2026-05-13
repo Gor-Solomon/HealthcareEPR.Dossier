@@ -42,9 +42,15 @@ public class AddSessionNoteTests
 
         // Assert
         result.Should().NotBeEmpty();
-        dossier.Notes.Should().HaveCount(1);
-        dossier.Notes.First().AiSummary.Should().Be(summary);
-        _repositoryMock.Verify(x => x.UpdateAsync(dossier, It.IsAny<CancellationToken>()), Times.Once);
+        
+        // Verify AddNoteAsync was called with the correct note data
+        _repositoryMock.Verify(x => x.AddNoteAsync(
+            It.Is<SessionNote>(n => 
+                n.DossierId == dossierId && 
+                n.RawContent == command.RawContent && 
+                n.AiSummary == summary), 
+            It.IsAny<CancellationToken>()), 
+            Times.Once);
     }
 
     [Fact]
@@ -65,9 +71,15 @@ public class AddSessionNoteTests
 
         // Assert
         result.Should().NotBeEmpty();
-        dossier.Notes.Should().HaveCount(1);
-        dossier.Notes.First().AiSummary.Should().BeNull(); // AI failed, but note is saved
-        _repositoryMock.Verify(x => x.UpdateAsync(dossier, It.IsAny<CancellationToken>()), Times.Once);
+        
+        // Verify AddNoteAsync was still called even if AI failed
+        _repositoryMock.Verify(x => x.AddNoteAsync(
+            It.Is<SessionNote>(n => 
+                n.DossierId == dossierId && 
+                n.RawContent == command.RawContent && 
+                n.AiSummary == null), 
+            It.IsAny<CancellationToken>()), 
+            Times.Once);
         
         // Verify logger was called
         _loggerMock.Verify(

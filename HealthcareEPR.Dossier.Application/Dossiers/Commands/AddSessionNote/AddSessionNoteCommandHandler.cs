@@ -27,7 +27,7 @@ public class AddSessionNoteCommandHandler : IRequestHandler<AddSessionNoteComman
         if (dossier == null)
             throw new Exception("Dossier not found");
 
-        var note = new SessionNote(Guid.NewGuid(), dossier.Id, request.RawContent);
+        var note = new SessionNote(Guid.NewGuid(), dossier.Id, Guid.NewGuid(), request.RawContent);
 
         try 
         {
